@@ -12,9 +12,22 @@ const createPost = async (req, res) => {
       throw new Error('Please upload an image');
     }
 
+    // Convert uploaded image to Base64 data URI
+    const filePath = req.file.path;
+    const fileBuffer = fs.readFileSync(filePath);
+    const mimeType = req.file.mimetype;
+    const base64Image = `data:${mimeType};base64,${fileBuffer.toString('base64')}`;
+
+    // Clean up local uploaded file
+    try {
+      fs.unlinkSync(filePath);
+    } catch (err) {
+      console.error('Failed to delete temporary upload file:', err);
+    }
+
     const post = await Post.create({
       user: req.user._id,
-      image: `/uploads/${req.file.filename}`,
+      image: base64Image,
       caption: req.body.caption || '',
     });
 
@@ -85,8 +98,8 @@ const deletePost = async (req, res) => {
       throw new Error('You are not authorized to delete this post');
     }
 
-    // Remove image file
-    if (post.image) {
+    // Remove local image file if it is not a base64 data URI
+    if (post.image && post.image.startsWith('/uploads')) {
       const imagePath = path.join(__dirname, '..', post.image);
       if (fs.existsSync(imagePath)) {
         fs.unlinkSync(imagePath);

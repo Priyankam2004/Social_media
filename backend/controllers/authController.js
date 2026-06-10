@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const fs = require('fs');
+const path = require('path');
 
 // Generate JWT Token
 const generateToken = (id) => {
@@ -38,7 +40,17 @@ const register = async (req, res) => {
     // Handle profile picture upload
     let profilePic = '';
     if (req.file) {
-      profilePic = `/uploads/${req.file.filename}`;
+      const filePath = req.file.path;
+      const fileBuffer = fs.readFileSync(filePath);
+      const mimeType = req.file.mimetype;
+      profilePic = `data:${mimeType};base64,${fileBuffer.toString('base64')}`;
+
+      // Clean up local uploaded file
+      try {
+        fs.unlinkSync(filePath);
+      } catch (err) {
+        console.error('Failed to delete temporary profile pic upload file:', err);
+      }
     }
 
     // Create user

@@ -4,6 +4,7 @@ import { HiHeart, HiOutlineHeart, HiOutlineChatAlt2, HiOutlineTrash } from 'reac
 import { toggleLike, removePost } from '../features/post/postSlice';
 import CommentModal from './CommentModal';
 import ConfirmModal from './ConfirmModal';
+import { getImageUrl } from '../utils/imageUrl';
 import toast from 'react-hot-toast';
 
 const PostCard = ({ post }) => {
@@ -18,7 +19,7 @@ const PostCard = ({ post }) => {
   const isLiked = post.likes?.includes(user?._id);
 
   const getProfilePic = () => {
-    if (post.user?.profilePic) return post.user.profilePic;
+    if (post.user?.profilePic) return getImageUrl(post.user.profilePic);
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(post.user?.name || 'U')}&background=6366f1&color=fff`;
   };
 
@@ -104,7 +105,7 @@ const PostCard = ({ post }) => {
         {/* Image */}
         <div className="relative border-y border-slate-50 bg-slate-50 overflow-hidden flex items-center justify-center">
           <img
-            src={post.image}
+            src={getImageUrl(post.image)}
             alt="Post content"
             className="w-full object-cover max-h-[520px] transition-transform duration-500 hover:scale-[1.01]"
             loading="lazy"

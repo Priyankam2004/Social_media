@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiX, HiOutlineTrash, HiPaperAirplane } from 'react-icons/hi';
 import { postComment, removeComment } from '../features/post/postSlice';
+import { getImageUrl } from '../utils/imageUrl';
 import toast from 'react-hot-toast';
 
 const CommentModal = ({ isOpen, onClose, post }) => {
@@ -51,7 +52,7 @@ const CommentModal = ({ isOpen, onClose, post }) => {
   };
 
   const getProfilePic = (commentUser) => {
-    if (commentUser?.profilePic) return commentUser.profilePic;
+    if (commentUser?.profilePic) return getImageUrl(commentUser.profilePic);
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(commentUser?.name || 'U')}&background=6366f1&color=fff&size=80`;
   };
 
@@ -156,7 +157,7 @@ const CommentModal = ({ isOpen, onClose, post }) => {
         <form onSubmit={handleSubmit} className="px-6 py-4 border-t border-slate-100 bg-white rounded-b-[24px]">
           <div className="flex items-center gap-3">
             <img
-              src={user?.profilePic || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'U')}&background=6366f1&color=fff&size=80`}
+              src={getImageUrl(user?.profilePic) || `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'U')}&background=6366f1&color=fff&size=80`}
               alt="You"
               className="w-8 h-8 rounded-full object-cover flex-shrink-0 ring-1 ring-slate-100"
             />

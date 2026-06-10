@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { HiCamera, HiX } from 'react-icons/hi';
 import { editProfile } from '../features/user/userSlice';
 import { updateUser } from '../features/auth/authSlice';
+import { getImageUrl } from '../utils/imageUrl';
 import toast from 'react-hot-toast';
 
 const ProfileForm = ({ profile, onClose }) => {
@@ -38,7 +39,7 @@ const ProfileForm = ({ profile, onClose }) => {
   };
 
   const getDisplayPic = () => {
-    if (preview) return preview;
+    if (preview) return getImageUrl(preview);
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(profile?.name || 'U')}&background=6366f1&color=fff&size=200`;
   };
 

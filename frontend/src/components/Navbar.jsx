@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { HiOutlineUser, HiOutlineLogout, HiMenu, HiX } from 'react-icons/hi';
 import { logout } from '../features/auth/authSlice';
+import { getImageUrl } from '../utils/imageUrl';
 import toast from 'react-hot-toast';
 
 const Navbar = () => {
@@ -31,7 +32,7 @@ const Navbar = () => {
   };
 
   const getProfilePic = () => {
-    if (user?.profilePic) return user.profilePic;
+    if (user?.profilePic) return getImageUrl(user.profilePic);
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'U')}&background=6366f1&color=fff`;
   };
 

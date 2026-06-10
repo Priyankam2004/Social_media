@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlinePhotograph, HiX } from 'react-icons/hi';
 import { createNewPost } from '../features/post/postSlice';
+import { getImageUrl } from '../utils/imageUrl';
 import toast from 'react-hot-toast';
 
 const CreatePost = () => {
@@ -59,7 +60,7 @@ const CreatePost = () => {
   };
 
   const getProfilePic = () => {
-    if (user?.profilePic) return user.profilePic;
+    if (user?.profilePic) return getImageUrl(user.profilePic);
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'U')}&background=6366f1&color=fff`;
   };
 

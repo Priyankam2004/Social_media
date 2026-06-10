@@ -6,6 +6,7 @@ import { fetchPosts } from '../features/post/postSlice';
 import ProfileForm from '../components/ProfileForm';
 import PostCard from '../components/PostCard';
 import Loader, { PostSkeleton } from '../components/Loader';
+import { getImageUrl } from '../utils/imageUrl';
 
 const Profile = () => {
   const [showEditForm, setShowEditForm] = useState(false);
@@ -23,7 +24,7 @@ const Profile = () => {
   const userPosts = posts.filter((p) => p.user?._id === user?._id);
 
   const getProfilePic = () => {
-    if (displayProfile?.profilePic) return displayProfile.profilePic;
+    if (displayProfile?.profilePic) return getImageUrl(displayProfile.profilePic);
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(displayProfile?.name || 'U')}&background=6366f1&color=fff&size=200`;
   };
 
